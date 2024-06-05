@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { User } from './user.entity';
 import { CreateUserDto } from './user.entity';
 import { UpdateUserDto } from './user.entity';
@@ -7,7 +7,7 @@ import { UpdateUserDto } from './user.entity';
 export class UserService {
   private users: User[] = [];
   private idCounter = 1;
-
+  private readonly logger = new Logger(UserService.name);
   create(userDto: CreateUserDto): User {
     const user: User = { id: this.idCounter++, ...userDto };
     this.users.push(user);
@@ -32,6 +32,7 @@ export class UserService {
 
   remove(id: number): boolean {
     const index = this.users.findIndex((user) => user.id === id);
+    this.logger.log(typeof index);
     if (index !== -1) {
       this.users.splice(index, 1);
       return true;
